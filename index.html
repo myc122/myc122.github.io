@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宇宙漫游 - 宇宙科普网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        .star-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: star-move linear infinite;
+        }
+        .star.small { width: 1px; height: 1px; }
+        .star.medium { width: 2px; height: 2px; }
+        .star.large { width: 3px; height: 3px; }
+        .star.bright { background: #4fc3f7; }
+        @keyframes star-move {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh) scale(1.2); opacity: 0; }
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 0;
+            z-index: 100;
+            transition: background 0.3s;
+        }
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 2px 10px rgba(79, 195, 247, 0.2);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .logo {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4fc3f7;
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a:hover {
+            color: #4fc3f7;
+        }
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            padding: 0 20px;
+        }
+        .hero h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #4fc3f7;
+            animation: fade-in 1.5s ease;
+        }
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            animation: fade-in 2s ease;
+        }
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .btn {
+            padding: 12px 30px;
+            background: rgba(79, 195, 247, 0.8);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            text-decoration: none;
+            animation: fade-in 2.5s ease;
+        }
+        .btn:hover {
+            background: #4fc3f7;
+            transform: scale(1.05);
+        }
+        .section {
+            padding: 100px 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            scroll-margin-top: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            font-size: 40px;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #4fc3f7;
+        }
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #4fc3f7;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #4fc3f7;
+            border: 4px solid #000;
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+            transition: transform 0.3s;
+        }
+        .timeline-item:hover::after {
+            transform: scale(1.3);
+        }
+        .left { left: 0; }
+        .right { left: 50%; }
+        .left::after { right: -13px; }
+        .right::after { left: -13px; }
+        .timeline-content {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            border: 1px solid #4fc3f7;
+            transition: box-shadow 0.3s;
+        }
+        .timeline-content:hover {
+            box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
+        }
+        .timeline-content h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #81d4fa;
+        }
+        .timeline-content p {
+            line-height: 1.6;
+        }
+        .planet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .planet-card {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #4fc3f7;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .planet-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(79, 195, 247, 0.3);
+        }
+        .planet-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .planet-card:hover .planet-img {
+            transform: scale(1.1);
+        }
+        .planet-info { padding: 20px; }
+        .planet-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #81d4fa;
+        }
+        .planet-info p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        .probe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .probe-card {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid #4fc3f7;
+            transition: transform 0.3s;
+        }
+        .probe-card:hover {
+            transform: scale(1.02);
+        }
+        .probe-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #81d4fa;
+        }
+        .probe-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: blink 2s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .interactive {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid #4fc3f7;
+            text-align: center;
+        }
+        .interactive h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #81d4fa;
+        }
+        .interactive input {
+            padding: 12px;
+            width: 300px;
+            border: 1px solid #4fc3f7;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border 0.3s;
+        }
+        .interactive input:focus {
+            outline: none;
+            border-color: #81d4fa;
+            box-shadow: 0 0 8px rgba(129, 212, 250, 0.5);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(79, 195, 247, 0.1);
+            border-radius: 8px;
+            display: none;
+            animation: fade-in 0.5s ease;
+        }
+        .result img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #4fc3f7;
+        }
+        .loading {
+            display: none;
+            margin: 20px auto;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(79, 195, 247, 0.3);
+            border-top: 4px solid #4fc3f7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 768px) {
+            .timeline::after { left: 31px; }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-item::after { left: 18px; }
+            .right { left: 0; }
+            .hero h1 { font-size: 40px; }
+            .interactive input { width: 100%; margin-right: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="star-bg" id="starBg"></div>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">宇宙漫游</a>
+            <div class="nav-links">
+                <a href="#birth">宇宙诞生</a>
+                <a href="#planet">星球档案</a>
+                <a href="#explore">深空探测</a>
+                <a href="#interactive">生日查星空</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>探索宇宙的无限可能</h1>
+        <p>从大爆炸的第一缕光，到深空探测器的每一次突破，我们带你穿越时空，解锁宇宙的终极奥秘</p>
+        <a href="#birth" class="btn">开始漫游</a>
+    </div>
+
+    <section class="section" id="birth">
+        <div class="section-container">
+            <h2 class="section-title">宇宙诞生 · 时间轴</h2>
+            <div class="timeline">
+                <div class="timeline-item left"><div class="timeline-content"><h3>0秒 · 大爆炸</h3><p>宇宙从奇点爆炸，空间和时间开始形成。</p></div></div>
+                <div class="timeline-item right"><div class="timeline-content"><h3>38万年 · 原子形成</h3><p>宇宙冷却，原子形成，光子自由传播。</p></div></div>
+                <div class="timeline-item left"><div class="timeline-content"><h3>1亿年 · 第一代恒星</h3><p>气体坍缩，宇宙第一批恒星诞生。</p></div></div>
+                <div class="timeline-item right"><div class="timeline-content"><h3>90亿年 · 太阳系形成</h3><p>太阳与地球在这一时期形成。</p></div></div>
+                <div class="timeline-item left"><div class="timeline-content"><h3>138亿年 · 现在</h3><p>宇宙加速膨胀，人类持续探索宇宙边界。</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="planet">
+        <div class="section-container">
+            <h2 class="section-title">星球档案 · 高清图鉴</h2>
+            <div class="planet-grid">
+                <div class="planet-card" onclick="showPlanetDetail('地球')">
+                    <img src="https://picsum.photos/id/1025/600/400" class="planet-img">
+                    <div class="planet-info"><h3>地球</h3><p>直径：12742公里</p><p>唯一已知有生命的行星</p></div>
+                </div>
+                <div class="planet-card" onclick="showPlanetDetail('火星')">
+                    <img src="https://picsum.photos/id/1028/600/400" class="planet-img">
+                    <div class="planet-info"><h3>火星</h3><p>直径：6779公里</p><p>红色星球，人类探测重点</p></div>
+                </div>
+                <div class="planet-card" onclick="showPlanetDetail('木星')">
+                    <img src="https://picsum.photos/id/1039/600/400" class="planet-img">
+                    <div class="planet-info"><h3>木星</h3><p>直径：139820公里</p><p>太阳系最大行星</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="explore">
+        <div class="section-container">
+            <h2 class="section-title">深空探测 · 实时动态</h2>
+            <div class="probe-grid">
+                <div class="probe-card"><h3>天问一号</h3><div class="probe-status"><div class="status-dot"></div><span>正常运行</span></div><p>位置：火星乌托邦平原</p></div>
+                <div class="probe-card"><h3>詹姆斯·韦伯</h3><div class="probe-status"><div class="status-dot"></div><span>正常运行</span></div><p>位置：L2拉格朗日点</p></div>
+                <div class="probe-card"><h3>旅行者1号</h3><div class="probe-status"><div class="status-dot"></div><span>低功耗运行</span></div><p>位置：星际空间</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="interactive">
+        <div class="section-container">
+            <h2 class="section-title">互动专区 · 生日查星空</h2>
+            <div class="interactive">
+                <h3>输入生日，查看当天星空</h3>
+                <input type="date" id="birthdayInput">
+                <button class="btn" onclick="getBirthdayStarMap()">查询星空图</button>
+                <div class="loading" id="loading"></div>
+                <div class="result" id="starResult">
+                    <h3 id="resultTitle"></h3>
+                    <img id="starMapImg">
+                    <p id="resultDesc"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function createStars(){
+            const starBg=document.getElementById('starBg');
+            starBg.innerHTML='';
+            const count=window.innerWidth>768?800:400;
+            for(let i=0;i<count;i++){
+                const s=document.createElement('div');
+                s.classList.add('star');
+                const t=['small','medium','large'][Math.floor(Math.random()*3)];
+                s.classList.add(t);
+                if(Math.random()>0.8)s.classList.add('bright');
+                s.style.left=Math.random()*100+'vw';
+                s.style.top=Math.random()*100+'vh';
+                s.style.animationDuration=(5+Math.random()*15)+'s';
+                s.style.animationDelay=Math.random()*10+'s';
+                starBg.appendChild(s);
+            }
+        }
+        window.addEventListener('scroll',()=>{
+            document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);
+            document.querySelectorAll('.section').forEach(el=>{
+                if(el.getBoundingClientRect().top<window.innerHeight*0.8)el.classList.add('visible');
+            });
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(a=>{
+            a.addEventListener('click',e=>{
+                e.preventDefault();
+                document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+            });
+        });
+        function showPlanetDetail(n){
+            const d={地球:'地球是唯一已知有生命的行星，有水、大气、磁场。',火星:'火星是红色星球，有火山与峡谷，未来移民候选。',木星:'太阳系最大行星，气态巨行星，有大红斑风暴。'};
+            alert(n+'：'+d[n]);
+        }
+        function getBirthdayStarMap(){
+            const b=document.getElementById('birthdayInput').value;
+            if(!b){alert('请选择生日');return;}
+            const l=document.getElementById('loading');
+            const r=document.getElementById('starResult');
+            l.style.display='block'; r.style.display='none';
+            setTimeout(()=>{
+                l.style.display='none'; r.style.display='block';
+                document.getElementById('resultTitle').textContent=b+' 当天星空';
+                document.getElementById('starMapImg').src='https://picsum.photos/id/'+[1039,1040,1047,1050][Math.floor(Math.random()*4)]+'/600/400';
+                document.getElementById('resultDesc').textContent='这天星空清晰，能看到猎户座、天狼星等著名天体。';
+            },1500);
+        }
+        window.onload=()=>{createStars(); window.dispatchEvent(new Event('scroll'));};
+        window.addEventListener('resize',createStars);
+    </script>
+</body>
+</html>
